@@ -6,7 +6,7 @@ This repository shouldbe forked in your own github account to create your test p
 
 Your goal is to create a gRPC microservice written in Go, Python, or Node. You MUST NOT use a web framework, so no Gin, Echo, Flask, Django, Express, etc.
 
-Code MUST run. Code must be completed in 1 week.
+Code MUST run. Code MUST be completed in 1 week.
 
 # Domains
 
