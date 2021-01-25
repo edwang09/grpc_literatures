@@ -36,3 +36,9 @@ You must also be able to produce reports:
 - which authors have the most awards? this report should show the top-10
 - which books have the most awards? this report should show the top-50, and be paginated 10 at a time
 - which award was given out most frequently? this report should show the top-5
+
+# Bonus Points
+
+Bonus points if this service is dockerized
+
+Bonus points if you canw rite the terraform to provision this in AWS
