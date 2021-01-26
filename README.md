@@ -1,6 +1,6 @@
 # jr-dev-test
 
-This repository shouldbe forked in your own github account to create your test project.
+This repository should be forked in your own github account to create your test project.
 
 # Requirements
 
@@ -22,7 +22,7 @@ Your service must be able to perform all CRUD functions on an author, as well as
 
 ## Books
 
-Books come in multiple formats, hardbound, paperback, digital only. They all have an ISBN, and they all have a number of pages (which typically caries by format). Some books win awards, and some authors win awards for specific books.
+Books come in multiple formats, hardbound, paperback, digital only. They all have an ISBN, and they all have a number of pages (which typically caries by format). Some books win awards.
 
 Your service must be able to perform all CRUD functions on a book, as well as associate authors and awards to a book.
 
