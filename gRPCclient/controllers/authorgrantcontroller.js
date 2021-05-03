@@ -7,7 +7,7 @@ exports.handle = function (req, res, grpcclient, reqUrl) {
     switch (req.method) {
         case "GET":
             if (reqUrl.searchParams.get('id')){
-                grpcclient.GetAuthor({author_id: reqUrl.searchParams.get('id')}, function(err, response) {
+                grpcclient.GetAuthorGrant({author_grant_id: reqUrl.searchParams.get('id')}, function(err, response) {
                     if(err){
                         console.log(err)
                         res.statusCode = 200;
@@ -24,12 +24,12 @@ exports.handle = function (req, res, grpcclient, reqUrl) {
                     }
                 });
             }else{
-                grpcclient.GetAllAuthors({}, function(err, response) {
+                grpcclient.GetAllAuthorGrants({}, function(err, response) {
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'text/plain');
                     console.log("got response from server")
                     console.log(response)
-                    res.end(JSON.stringify(response.authors));
+                    res.end(JSON.stringify(response));
                 });
             }
             break;
@@ -41,7 +41,7 @@ exports.handle = function (req, res, grpcclient, reqUrl) {
             req.on('end', function () {
                 var post = JSON.parse(body);
                 console.log(post);
-                grpcclient.AddAuthor(post, function(err, response) {
+                grpcclient.AddAuthorGrant(post, function(err, response) {
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'text/plain');
                     console.log("got response from server")
@@ -59,7 +59,7 @@ exports.handle = function (req, res, grpcclient, reqUrl) {
             });
             req.on('end', function () {
                 var post = JSON.parse(body);
-                grpcclient.EditAuthor(post, function(err, response) {
+                grpcclient.EditAuthorGrant(post, function(err, response) {
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'text/plain');
                     console.log("got response from server")
@@ -75,7 +75,7 @@ exports.handle = function (req, res, grpcclient, reqUrl) {
             });
             req.on('end', function () {
                 var post = JSON.parse(body);
-                grpcclient.DeleteAuthor(post, function(err, response) {
+                grpcclient.DeleteAuthorGrant(post, function(err, response) {
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'text/plain');
                     console.log("got response from server")

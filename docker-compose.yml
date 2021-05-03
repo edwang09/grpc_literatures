@@ -8,6 +8,7 @@ services:
         volumes:
             - ./gRPCserver:/app
             - /app/node_modules
+            - ./protos:/app/protos
         environment:
             - PORT=50051
             - MYSQL_IP=mysql_db1
@@ -23,6 +24,7 @@ services:
         volumes:
             - ./gRPCclient:/app
             - /app/node_modules
+            - ./protos:/app/protos
         environment:
             - PORT=3000
     # mysql_db:
