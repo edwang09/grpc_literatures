@@ -6,31 +6,21 @@ services:
             context: ./gRPCserver
             args:
                 NODE_ENV: production
-        volumes:
-            - ./gRPCserver:/app
-            - /app/node_modules
-            - ./protos:/app/protos
         environment:
             - NODE_ENV=production
             - PORT=50051
-            - MYSQL_IP=mysql_db1
+            - MYSQL_IP=mysql_db
             - MYSQL_PROT=3306
             - MYSQL_USER=user
             - MYSQL_PASSWORD=password
-        depends_on:
-            - mysql_db1
         command: node index.js
     grpcclient:
         build: ./gRPCclient
-        ports: 
-            - "80:3000"
         environment:
             - PORT=3000
         command: node index.js
-    mysql_db1:
+    mysql_db:
         environment:
-            MYSQL_USER: 'user'
-            MYSQL_PASSWORD: 'password'
             MYSQL_ROOT_PASSWORD: 'password'
 volumes:
-    mysql-db1:
+    mysql-db:
