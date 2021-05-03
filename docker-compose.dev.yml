@@ -2,25 +2,24 @@ version: '3'
 
 services:
     grpcserver:
-        build: ./gRPCserver
-        image: edwang09/grpc-node-server
-        # ports: 
-        #     - "50051:50051"
+        build: 
+            context: ./gRPCserver
+            args:
+                NODE_ENV: development
         volumes:
             - ./gRPCserver:/app
             - /app/node_modules
             - ./protos:/app/protos
         environment:
             - PORT=50051
-            - MYSQL_IP=mysql_db
+            - MYSQL_IP=mysql_db1
             - MYSQL_PROT=3306
             - MYSQL_USER=user
             - MYSQL_PASSWORD=password
         depends_on:
-            - mysql_db
+            - mysql_db1
     grpcclient:
         build: ./gRPCclient
-        image: edwang09/grpc-node-client
         ports: 
             - "3000:3000"
         volumes:
@@ -29,14 +28,20 @@ services:
             - ./protos:/app/protos
         environment:
             - PORT=3000
-    mysql_db:
-        image: mysql:5.7
-        restart: always
-        volumes:
-            - mysql-db:/var/lib/mysql
+    mysql_db1:
         environment:
             MYSQL_USER: 'user'
             MYSQL_PASSWORD: 'password'
             MYSQL_ROOT_PASSWORD: 'password'
+    mysql_admin:
+        image: phpmyadmin:5.1
+        restart: always
+        ports:
+            - 8080:80
+        environment:
+            PMA_HOST: mysql_db1
+            PMA_PASSWORD: 'password'
+        depends_on:
+            - mysql_db1
 volumes:
-    mysql-db:
+    mysql-db1:
