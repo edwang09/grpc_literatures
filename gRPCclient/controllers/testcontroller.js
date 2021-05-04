@@ -1,8 +1,10 @@
+const {SendJSON, SendTEXT} = require("../helpers/helper");
 exports.handle = function (req, res, grpcclient, reqUrl) {
     grpcclient.TestgRPC({body: "hello world"}, function(err, response) {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/json');
-        console.log("got response from server")
-        res.end(response.body);
+        if(err){
+            SendTEXT(res, err.message)
+        }else{
+            SendJSON(res, response)
+        }
     });
 };

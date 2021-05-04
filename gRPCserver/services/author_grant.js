@@ -17,7 +17,6 @@ const GetAllAuthorGrants = (call, callback)=>{
 }
 
 const GetAuthorGrant = (call, callback)=>{
-    console.log(call.request)
     db.query(`SELECT 
     author_grant.author_grant_id,
     award.award_id,
@@ -40,7 +39,7 @@ const GetAuthorGrant = (call, callback)=>{
     })
 }
 const AddAuthorGrant = (call, callback)=>{
-    console.log(call.request)
+    
     db.query(`INSERT INTO author_grant (author_id, award_id) 
     VALUES ('${call.request.author_id}','${call.request.award_id}') `, (err, res)=>{
         if (err) throw err;
@@ -49,7 +48,7 @@ const AddAuthorGrant = (call, callback)=>{
     })
 }
 const EditAuthorGrant = (call, callback)=>{
-    console.log(call.request)
+    
     db.query(`UPDATE author_grant 
     SET author_id = '${call.request.author_id}',
     award_id = '${call.request.award_id}' 
@@ -60,7 +59,7 @@ const EditAuthorGrant = (call, callback)=>{
     })
 }
 const DeleteAuthorGrant = (call, callback)=>{
-    console.log(call.request)
+    
     db.query(`DELETE FROM author_grant WHERE author_grant_id = '${call.request.author_grant_id}'`, (err, res)=>{
         if (err) throw err;
         console.log(res)

@@ -1,6 +1,6 @@
 //mysql
 const mysql = require('mysql')
-const {MYSQL_IP, MYSQL_PORT,  MYSQL_PASSWORD } = require("../config/config")
+const {MYSQL_IP, MYSQL_PORT, MYSQL_USER,  MYSQL_PASSWORD, MYSQL_DB } = require("../config/config")
 var db;
 module.exports = {
     getDb: function () {
@@ -8,9 +8,9 @@ module.exports = {
         db = mysql.createConnection({
             host: MYSQL_IP,
             port: MYSQL_PORT,
-            user: "root",
+            user: MYSQL_USER,
             password: MYSQL_PASSWORD,
-            database: "literature"
+            database: MYSQL_DB
         });
         tryConnect(db);
         return db;
@@ -22,7 +22,7 @@ const tryConnect = (db)=>{
         if (err) {
             console.log(err);
             console.log("trying to reconnect");
-            setTimeout(()=>tryConnect(db), 10000);
+            setTimeout(()=>tryConnect(db), 5000);
         }else{
             console.log("Connected!");
 
