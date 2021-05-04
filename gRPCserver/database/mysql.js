@@ -1,6 +1,6 @@
 //mysql
 const mysql = require('mysql')
-const {MYSQL_IP, MYSQL_PORT,  MYSQL_ROOT_PASSWORD } = require("../config/config")
+const {MYSQL_IP, MYSQL_PORT,  MYSQL_PASSWORD } = require("../config/config")
 var db;
 module.exports = {
     getDb: function () {
@@ -9,7 +9,7 @@ module.exports = {
             host: MYSQL_IP,
             port: MYSQL_PORT,
             user: "root",
-            password: MYSQL_ROOT_PASSWORD,
+            password: MYSQL_PASSWORD,
             database: "literature"
         });
         tryConnect(db);
