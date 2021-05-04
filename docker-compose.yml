@@ -14,7 +14,9 @@ services:
     mysql_db:
         image: mysql:5.7
         restart: always
+        command: --init-file /data/application/init.sql    
         volumes:
+            - ./databasedumps/init.sql:/data/application/init.sql
             - mysql-db:/var/lib/mysql
 volumes:
     mysql-db:
