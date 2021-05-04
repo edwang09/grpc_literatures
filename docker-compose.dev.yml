@@ -14,7 +14,7 @@ services:
             - PORT=50051
             - MYSQL_IP=mysql_db
             - MYSQL_PROT=3306
-            - MYSQL_USER=user
+            - MYSQL_USER=root
             - MYSQL_PASSWORD=password
     grpcclient:
         ports: 
