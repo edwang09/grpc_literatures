@@ -1,9 +1,8 @@
-const http = require('http');
-const port = process.env.PORT || 50051;
+const port = process.env.PORT;
 
 
 //proto buffer
-var PROTO_PATH = __dirname + '/protos/literature.proto';
+var PROTO_PATH = __dirname + '/literature/literature.proto';
 var grpc = require('@grpc/grpc-js');
 var protoLoader = require('@grpc/proto-loader');
 var packageDefinition = protoLoader.loadSync(

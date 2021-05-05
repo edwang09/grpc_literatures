@@ -43,7 +43,7 @@ const GetBook = (call, callback)=>{
     FROM book
     WHERE book.book_id = ${call.request.book_id}`, (err, res)=>{
         if (err) throw err;
-        callback(null, {books : JSON.parse(JSON.stringify(res))})
+        callback(null, JSON.parse(JSON.stringify(res[0])))
     })
 }
 const AddBook = (call, callback)=>{

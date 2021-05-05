@@ -6,6 +6,11 @@ services:
         image: edwang09/grpc-node-server
         depends_on:
             - mysql_db
+    grpcservergo:
+        build: ./gRPCserver_go
+        # image: edwang09/grpc-node-server-go
+        depends_on:
+            - mysql_db
     grpcclient:
         build: ./gRPCclient
         image: edwang09/grpc-node-client

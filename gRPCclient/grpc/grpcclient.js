@@ -1,6 +1,6 @@
 const {GRPC_IP, GRPC_PORT } = require("../config/config")
 
-const PROTO_PATH = __dirname + '/../protos/literature.proto';
+const PROTO_PATH = __dirname + '/../literature/literature.proto';
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 const packageDefinition = protoLoader.loadSync(

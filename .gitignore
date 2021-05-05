@@ -17,5 +17,5 @@ node_modules
 .env
 terraform
 docker-compose.backup.yml
-gRPCclient/protos
-gRPCserver/protos
+gRPCclient/literature
+gRPCserver/literature
