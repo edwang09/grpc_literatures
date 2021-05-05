@@ -6,15 +6,28 @@ services:
             context: ./gRPCserver
             args:
                 NODE_ENV: production
+        ports: 
+            - "50051:50051"
         environment:
             - NODE_ENV=production
             - PORT=50051
             - MYSQL_IP=${MYSQL_IP}
-            - MYSQL_PROT=${MYSQL_PROT}
+            - MYSQL_PORT=${MYSQL_PORT}
             - MYSQL_USER=${MYSQL_USER}
             - MYSQL_PASSWORD=${MYSQL_PASSWORD}
             - MYSQL_DB=${MYSQL_DB}
         command: node index.js
+    grpcservergo:
+        ports: 
+            - "50052:50052"
+        environment:
+            - PORT=50052
+            - MYSQL_IP=${MYSQL_IP}
+            - MYSQL_PORT=${MYSQL_PORT}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - MYSQL_DB=${MYSQL_DB}
+        command: go run main.go
     grpcclient:
         build: ./gRPCclient
         environment:

@@ -49,4 +49,50 @@ Bonus points if you can write the terraform to provision this in AWS
 
 # Solution
 
-## 
+
+
+## About the Project
+### Project diagram
+[![Structure Screen Shot][project-screenshot]]
+
+### Database diagram
+[![Database Screen Shot][database-screenshot]]
+
+## Prerequisites
+
+### Docker
+
+## How to start
+
+### development
+   ```sh
+    sudo docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+
+   ```
+
+### production
+
+   ```sh
+cp protos gRPCclient -r
+cp protos gRPCserver -r
+sudo docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
+sudo docker-compose -f docker-compose.yml -f docker-compose.prod.yml push
+
+   ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[product-screenshot]: demo/structure.png
+[product-screenshot]: demo/database.png

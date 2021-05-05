@@ -6,7 +6,6 @@ import (
 	"errors"
 	pb "jr-dev-test/literature"
 	mysql "jr-dev-test/mysql"
-	"log"
 )
 
 type Server struct {
@@ -14,12 +13,10 @@ type Server struct {
 }
 
 func (s *Server) TestgRPC(ctx context.Context, in *pb.Text) (*pb.Text, error) {
-	log.Printf("Received: %v", in.GetBody())
 	return &pb.Text{Body: "Hello " + in.GetBody()}, nil
 }
 
 func (s *Server) GetAllAuthors(ctx context.Context, in *pb.Empty) (*pb.AuthorList, error) {
-	log.Printf("Received: GetAllAuthors ")
 	var authors []*pb.Author
 	results, err := mysql.DB.Query("SELECT * FROM author")
 	for results.Next() {
@@ -47,7 +44,7 @@ func (s *Server) AddAuthor(ctx context.Context, in *pb.NewAuthor) (*pb.Author, e
 	}
 	AuthorId, err := res.LastInsertId()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	return &pb.Author{AuthorId: int32(AuthorId), AuthorName: in.GetAuthorName()}, nil
 }
@@ -74,7 +71,6 @@ func (s *Server) DeleteAuthor(ctx context.Context, in *pb.AuthorId) (*pb.Empty, 
 }
 
 func (s *Server) GetAllBooks(ctx context.Context, in *pb.Empty) (*pb.BookList, error) {
-	log.Printf("Received: GetAllBooks ")
 	var books []*pb.Book
 	results, err := mysql.DB.Query("SELECT * FROM book")
 	for results.Next() {
@@ -165,7 +161,7 @@ func (s *Server) AddAward(ctx context.Context, in *pb.NewAward) (*pb.Award, erro
 	}
 	AwardId, err := res.LastInsertId()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	return &pb.Award{AwardId: int32(AwardId), AwardName: in.GetAwardName()}, nil
 }
@@ -237,7 +233,7 @@ func (s *Server) AddBookAuthor(ctx context.Context, in *pb.NewBookAuthor) (*pb.B
 	}
 	BookAuthorId, err := res.LastInsertId()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	return &pb.BookAuthor{BookAuthorId: int32(BookAuthorId), BookId: in.GetBookId(), AuthorId: in.GetAuthorId()}, nil
 }
@@ -318,7 +314,7 @@ func (s *Server) AddAuthorGrant(ctx context.Context, in *pb.NewAuthorGrant) (*pb
 	}
 	AuthorGrantId, err := res.LastInsertId()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	return &pb.AuthorGrant{AuthorGrantId: int32(AuthorGrantId), AwardId: in.GetAwardId(), AuthorId: in.GetAuthorId()}, nil
 }
@@ -399,7 +395,7 @@ func (s *Server) AddBookGrant(ctx context.Context, in *pb.NewBookGrant) (*pb.Boo
 	}
 	BookGrantId, err := res.LastInsertId()
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	return &pb.BookGrant{BookGrantId: int32(BookGrantId), AwardId: in.GetAwardId(), BookId: in.GetBookId()}, nil
 }

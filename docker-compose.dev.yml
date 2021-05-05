@@ -11,11 +11,11 @@ services:
         volumes:
             - ./gRPCserver:/app
             - /app/node_modules
-            - ./literature:/app/literature
+            - ./literature:/app/literature:ro
         environment:
             - PORT=50051
             - MYSQL_IP=mysql_db
-            - MYSQL_PROT=3306
+            - MYSQL_PORT=3306
             - MYSQL_USER=root
             - MYSQL_PASSWORD=password
             - MYSQL_DB=literature
@@ -24,14 +24,15 @@ services:
             - "50052:50052"
         volumes:
             - ./gRPCserver_go:/app
+            - ./literature:/app/literature
         environment:
             - PORT=50052
             - MYSQL_IP=mysql_db
-            - MYSQL_PROT=3306
+            - MYSQL_PORT=3306
             - MYSQL_USER=root
             - MYSQL_PASSWORD=password
             - MYSQL_DB=literature
-        command: go run main.go
+        command: bash -c "./protoc --go_out=.  --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative literature/literature.proto && go run main.go"
     grpcclient:
         ports: 
             - "3000:3000"

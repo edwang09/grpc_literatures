@@ -18,12 +18,6 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LiteratureClient interface {
-	// A simple RPC.
-	//
-	// Obtains the feature at a given position.
-	//
-	// A feature with an empty name is returned if there's no feature at the given
-	// position.
 	TestgRPC(ctx context.Context, in *Text, opts ...grpc.CallOption) (*Text, error)
 	GetAllAuthors(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AuthorList, error)
 	GetAuthor(ctx context.Context, in *AuthorId, opts ...grpc.CallOption) (*Author, error)
@@ -378,12 +372,6 @@ func (c *literatureClient) MostGrantedAward(ctx context.Context, in *Empty, opts
 // All implementations must embed UnimplementedLiteratureServer
 // for forward compatibility
 type LiteratureServer interface {
-	// A simple RPC.
-	//
-	// Obtains the feature at a given position.
-	//
-	// A feature with an empty name is returned if there's no feature at the given
-	// position.
 	TestgRPC(context.Context, *Text) (*Text, error)
 	GetAllAuthors(context.Context, *Empty) (*AuthorList, error)
 	GetAuthor(context.Context, *AuthorId) (*Author, error)
