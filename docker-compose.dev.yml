@@ -11,7 +11,7 @@ services:
         volumes:
             - ./gRPCserver:/app
             - /app/node_modules
-            - ./protos:/app/protos
+            - ./literature:/app/literature
         environment:
             - PORT=50051
             - MYSQL_IP=mysql_db

@@ -30,7 +30,6 @@ exports.handle = function (req, res, grpcclient, reqUrl) {
         case "POST":
             req.on('end', function () {
                 var post = JSON.parse(body);
-                console.log(post);
                 grpcclient.AddBookGrant(post, function(err, response) {
                     if(err){
                         SendTEXT(res, err.message)

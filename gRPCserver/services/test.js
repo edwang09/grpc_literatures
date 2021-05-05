@@ -1,5 +1,5 @@
 module.exports = {
-    TestgRPC: (call, callback)=>{
+    TestgRPC: (call, callback) => {
         callback(null, {body : "from gRPC server: " + call.request.body})
       }
 }

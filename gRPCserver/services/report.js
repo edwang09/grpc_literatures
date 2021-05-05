@@ -25,7 +25,7 @@ FROM book left join book_grant on book.book_id = book_grant.book_id
 GROUP BY book.book_id
 ORDER BY awarded_time DESC
 LIMIT 10
-OFFSET ${(page-1)*10}
+OFFSET ${(page<1 ? 0 : (page-1)*10)}
 `
 
 const awardquery =`
@@ -42,26 +42,23 @@ LIMIT 5
 `
 
 
-const MostAwardedAuthor = (call, callback)=>{
+const MostAwardedAuthor = (_, callback)=>{
     db.query(authorquery, (err, res)=>{
-        if (err) throw err;
-        console.log(JSON.parse(JSON.stringify(res)));
-        callback(null, {authors : JSON.parse(JSON.stringify(res))})
+        if (err) callback(err)
+        else callback(null, {authors : JSON.parse(JSON.stringify(res))})
     })
 }
 
 const MostAwardedBook = (call, callback)=>{
     db.query(bookquery(call.request.page), (err, res)=>{
-        if (err) throw err;
-        console.log(JSON.parse(JSON.stringify(res)));
-        callback(null, {books : JSON.parse(JSON.stringify(res))})
+        if (err) callback(err)
+        else callback(null, {books : JSON.parse(JSON.stringify(res))})
     })
 }
-const MostGrantedAward = (call, callback)=>{
+const MostGrantedAward = (_, callback)=>{
     db.query(awardquery, (err, res)=>{
-        if (err) throw err;
-        console.log(JSON.parse(JSON.stringify(res)));
-        callback(null, {awards : JSON.parse(JSON.stringify(res))})
+        if (err) callback(err)
+        else callback(null, {awards : JSON.parse(JSON.stringify(res))})
     })
 }
 

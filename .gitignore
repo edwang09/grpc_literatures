@@ -15,6 +15,7 @@
 # vendor/
 node_modules
 .env
+databasedumps
 terraform
 docker-compose.backup.yml
 gRPCclient/literature

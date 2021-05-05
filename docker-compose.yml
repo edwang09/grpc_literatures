@@ -21,7 +21,7 @@ services:
         restart: always
         command: --init-file /data/application/init.sql    
         volumes:
-            - ./databasedumps/init.sql:/data/application/init.sql
+            - ./database/init.sql:/data/application/init.sql
             - mysql-db:/var/lib/mysql
 volumes:
     mysql-db:

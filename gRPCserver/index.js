@@ -1,11 +1,11 @@
 const port = process.env.PORT;
 
 
-//proto buffer
-var PROTO_PATH = __dirname + '/literature/literature.proto';
-var grpc = require('@grpc/grpc-js');
-var protoLoader = require('@grpc/proto-loader');
-var packageDefinition = protoLoader.loadSync(
+//Load proto file
+const PROTO_PATH = __dirname + '/literature/literature.proto';
+const grpc = require('@grpc/grpc-js');
+const protoLoader = require('@grpc/proto-loader');
+const packageDefinition = protoLoader.loadSync(
     PROTO_PATH,
     {keepCase: true,
      longs: String,
@@ -13,12 +13,12 @@ var packageDefinition = protoLoader.loadSync(
      defaults: true,
      oneofs: true
     });
-var literature_proto = grpc.loadPackageDefinition(packageDefinition).literature;
+const literature_proto = grpc.loadPackageDefinition(packageDefinition).literature;
 
 
 
 
-// grpc server
+// start grpc server
 const testService = require("./services/test")
 const authorService = require("./services/author")
 const bookService = require("./services/book")
