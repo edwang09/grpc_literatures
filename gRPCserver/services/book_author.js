@@ -1,5 +1,19 @@
 const db = require('../database/mysql').getDb();
 const grpc = require('@grpc/grpc-js');
+const {ValidateCallback, ValidateRequest} = require('../helper/helper');
+/**
+ * @callback requestCallback
+ * @param {Object} error
+ * @param {Object} response
+ */
+
+
+
+/**
+ * Get all books and authors relationship
+ * @param {Object} _ 
+ * @param {requestCallback} callback
+ */
 const GetAllBookAuthors = (_, callback)=>{
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query(`SELECT 
@@ -15,7 +29,11 @@ const GetAllBookAuthors = (_, callback)=>{
         else callback(null, {book_authors : JSON.parse(JSON.stringify(res))})
     })
 }
-
+/**
+ * Get one book and author relationship by id with book and author names
+ * @param {Object} call
+ * @param {requestCallback} callback
+ */
 const GetBookAuthor = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -40,6 +58,12 @@ const GetBookAuthor = (call, callback)=>{
         }
     })
 }
+
+/**
+ * Associate an book to an author
+ * @param {Object} call
+ * @param {requestCallback} callback
+ */
 const AddBookAuthor = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -49,6 +73,11 @@ const AddBookAuthor = (call, callback)=>{
         else callback(null, JSON.parse(JSON.stringify({...call.request, book_author_id: res.insertId})))
     })
 }
+/**
+ * Edit association of an book to an author
+ * @param {Object} call
+ * @param {requestCallback} callback
+ */
 const EditBookAuthor = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -67,6 +96,11 @@ const EditBookAuthor = (call, callback)=>{
         }
     })
 }
+/**
+ * Remove association of an book to an author
+ * @param {Object} call
+ * @param {requestCallback} callback
+ */
 const DeleteBookAuthor = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")

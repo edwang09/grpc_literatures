@@ -1,7 +1,19 @@
 const db = require('../database/mysql').getDb();
 const grpc = require('@grpc/grpc-js');
 const {ValidateCallback, ValidateRequest} = require('../helper/helper');
+/**
+ * @callback requestCallback
+ * @param {Object} error
+ * @param {Object} response
+ */
 
+
+
+/**
+ * Get all authors with author id and author names
+ * @param {Object} _ 
+ * @param {requestCallback} callback
+ */
 const GetAllAuthors = (_, callback) => {
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query("SELECT * FROM author", (err, res)=>{
@@ -9,6 +21,12 @@ const GetAllAuthors = (_, callback) => {
         else callback(null, {authors : JSON.parse(JSON.stringify(res))})
     })
 }
+
+/**
+ * Get one authors by id with author id and author names
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const GetAuthorById = (call, callback) => {
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -25,7 +43,11 @@ const GetAuthorById = (call, callback) => {
     })
 }
 
-
+/**
+ * Search  authors by name 
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const SearchAuthorByName = (call, callback) => {
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid Callback Function")
@@ -34,6 +56,13 @@ const SearchAuthorByName = (call, callback) => {
         else callback(null, {authors : JSON.parse(JSON.stringify(res))})
     })
 }
+
+
+/**
+ * Create a new author with name, returns author id and author name 
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const AddAuthor = (call, callback) => {
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid Callback Function")
@@ -42,6 +71,12 @@ const AddAuthor = (call, callback) => {
         else callback(null, JSON.parse(JSON.stringify({...call.request, author_id: res.insertId})))
     })
 }
+
+/**
+ * Edit an existing author name, returns author id and author name 
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const EditAuthor = (call, callback) => {
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid Callback Function")
@@ -60,6 +95,11 @@ const EditAuthor = (call, callback) => {
         }
     })
 }
+/**
+ * Remove an existing author
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const DeleteAuthor = (call, callback) => {
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid Callback Function")

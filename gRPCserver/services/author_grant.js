@@ -1,5 +1,20 @@
 const db = require('../database/mysql').getDb();
 const grpc = require('@grpc/grpc-js');
+const {ValidateCallback, ValidateRequest} = require('../helper/helper');
+
+/**
+ * @callback requestCallback
+ * @param {Object} error
+ * @param {Object} response
+ */
+
+
+
+/**
+ * Get all awards granted to author with award and author names
+ * @param {Object} _ 
+ * @param {requestCallback} callback
+ */
 const GetAllAuthorGrants = (_, callback)=>{
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query(`SELECT 
@@ -16,6 +31,11 @@ const GetAllAuthorGrants = (_, callback)=>{
     })
 }
 
+/**
+ * Get one awards granted to author by id with award and author names
+ * @param {Object} call
+ * @param {requestCallback} callback
+ */
 const GetAuthorGrant = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -40,6 +60,11 @@ const GetAuthorGrant = (call, callback)=>{
         }
     })
 }
+/**
+ * Associate an award to an author
+ * @param {Object} call
+ * @param {requestCallback} callback
+ */
 const AddAuthorGrant = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -49,7 +74,11 @@ const AddAuthorGrant = (call, callback)=>{
         else callback(null, JSON.parse(JSON.stringify({...call.request, author_grant_id: res.insertId})))
     })
 }
-
+/**
+ * Edit association of an award to an author
+ * @param {Object} call
+ * @param {requestCallback} callback
+ */
 const EditAuthorGrant = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -67,7 +96,11 @@ const EditAuthorGrant = (call, callback)=>{
         }
     })
 }
-
+/**
+ * Remove association of an award to an author
+ * @param {Object} call
+ * @param {requestCallback} callback
+ */
 const DeleteAuthorGrant = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")

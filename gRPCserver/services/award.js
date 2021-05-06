@@ -1,7 +1,20 @@
 const db = require('../database/mysql').getDb();
 const grpc = require('@grpc/grpc-js');
+const {ValidateCallback, ValidateRequest} = require('../helper/helper');
+
+/**
+ * @callback requestCallback
+ * @param {Object} error
+ * @param {Object} response
+ */
 
 
+
+/**
+ * Get all awards with award id and award names
+ * @param {Object} _ 
+ * @param {requestCallback} callback
+ */
 const GetAllAwards = (_, callback)=>{
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query("SELECT * FROM award", (err, res)=>{
@@ -9,7 +22,11 @@ const GetAllAwards = (_, callback)=>{
         else callback(null, {awards : JSON.parse(JSON.stringify(res))})
     })
 }
-
+/**
+ * Get one awards by id with award id and award names
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const GetAwardById = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -25,6 +42,12 @@ const GetAwardById = (call, callback)=>{
         }
     })
 }
+
+/**
+ * Search  awards by name 
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const SearchAwardByName = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -33,6 +56,11 @@ const SearchAwardByName = (call, callback)=>{
         else callback(null, {awards : JSON.parse(JSON.stringify(res))})
     })
 }
+/**
+ * Create a new award with name, returns award id and award name 
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const AddAward = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -41,6 +69,11 @@ const AddAward = (call, callback)=>{
         else callback(null, JSON.parse(JSON.stringify({...call.request, award_id: res.insertId})))
     })
 }
+/**
+ * Edit an existing award name, returns edited award id and award name 
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const EditAward = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -56,6 +89,11 @@ const EditAward = (call, callback)=>{
         }
     })
 }
+/**
+ * Remove an existing award
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const DeleteAward = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")

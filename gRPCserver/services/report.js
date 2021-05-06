@@ -1,5 +1,6 @@
 const db = require('../database/mysql').getDb();
-const grpc = require('@grpc/grpc-js');
+const {ValidateCallback, ValidateRequest} = require('../helper/helper');
+
 const authorquery = `
 SELECT 
 author.author_id,
@@ -41,7 +42,19 @@ ORDER BY awarded_time DESC
 LIMIT 5
 `
 
+/**
+ * @callback requestCallback
+ * @param {Object} error
+ * @param {Object} response
+ */
 
+
+
+/**
+ * Get top 10 authors that were granted the most awards with the times they are awarded
+ * @param {Object} _ 
+ * @param {requestCallback} callback
+ */
 const MostAwardedAuthor = (_, callback)=>{
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query(authorquery, (err, res)=>{
@@ -49,7 +62,11 @@ const MostAwardedAuthor = (_, callback)=>{
         else callback(null, {authors : JSON.parse(JSON.stringify(res))})
     })
 }
-
+/**
+ * Get top 50 books that were granted the most awards with the times they are awarded, paginated by 10
+ * @param {Object} _ 
+ * @param {requestCallback} callback
+ */
 const MostAwardedBook = (_, callback)=>{
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query(bookquery, [page<1 ? 0 : (page-1)*10],  (err, res)=>{
@@ -57,6 +74,11 @@ const MostAwardedBook = (_, callback)=>{
         else callback(null, {books : JSON.parse(JSON.stringify(res))})
     })
 }
+/**
+ * Get top 5 awards that were awarded for most times
+ * @param {Object} _ 
+ * @param {requestCallback} callback
+ */
 const MostGrantedAward = (_, callback)=>{
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query(awardquery, (err, res)=>{

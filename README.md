@@ -1,6 +1,11 @@
 # Solution
 
 ## About the Project
+This project was intended to build a gRPC server in Node.js, which is the main deliverable for the test. 
+An Node.js REST server was also built initially to serve as a client for the gRPC server before I know that Wombat will be used for testing the gRPC server.
+After talking with Micheal Switzer, I decided to build another gRPC server in Golang to demonstrate my ability to work across multiple languages.
+Reviewing of the REST server and Golang server can be optional.
+
 ### Docker Structure
 ![Structure Screen Shot][docker-diagram]
 
@@ -21,12 +26,21 @@ Docker, Docker Compose, Terraform
    ```
 
 ### Terraform provision
-the terraform file will create a security group and a EC2 instance opening ports of 22(for SSH), 80(for REST API), 50051(for Node GRPC server), 50052(for go GRPC server).
+The terraform file will create a security group and a EC2 instance opening ports: 
 
+| port  | description  |
+|-------|--------------|
+| 22    | SSH          |
+| 80    | REST API     |
+| 50051 | Node.js gRPC |
+| 50052 | Golang gRPC  |
+
+To run:
    ```sh
    terraform -chdir=terraform apply
    ```
-After the instance been created, SSH into the instance and install docker and docker-compose, export necessary environment variables(can be checked in docker-compose.prod.yml) and pull source code from github.
+
+To configure the instance, SSH into the instance and install docker and docker-compose, export necessary environment variables(can be checked in docker-compose.prod.yml) and pull source code from github.
 
 ### Production
 
@@ -46,10 +60,12 @@ On AWS EC2
    sudo docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
    ```
 
-## Concern
+## Concerns and questions
 
-Because of the names of author, award or book can have different versions, the name are not used as key of the tables in database, instead an additional search function for each table are implemented.
-
+1. Because of the names of author, award or book can have different versions, the name are not used as key of the tables in database, instead an additional search function for each table are implemented.
+2. When implementing services in `Golang`, I did not figure out how to create a server struct and implement services in separate packages, which end up implementing all functions in one file. What can be a better way to do it?
+3. Live reloading for development for Go server was not implemented, but I should have implement it.
+4. I tried to only compile `.proto` file in docker so that I can make sure all three servers have save `.proto` file when I make change to it, but that will confuse my IDE since the package is missing in local. Is there a better way to make sure `.proto` file is consistant?
 
 
 

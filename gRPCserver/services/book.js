@@ -1,6 +1,20 @@
 const db = require('../database/mysql').getDb();
 const grpc = require('@grpc/grpc-js');
+const {ValidateCallback, ValidateRequest} = require('../helper/helper');
 
+/**
+ * @callback requestCallback
+ * @param {Object} error
+ * @param {Object} response
+ */
+
+
+
+/**
+ * Get all books with book id, book names, format, isbn and page
+ * @param {Object} _ 
+ * @param {requestCallback} callback
+ */
 const GetAllBooks = (_, callback)=>{
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query("SELECT * FROM book", (err, res)=>{
@@ -8,7 +22,11 @@ const GetAllBooks = (_, callback)=>{
         else callback(null, {books : JSON.parse(JSON.stringify(res))})
     })
 }
-
+/**
+ * Get one books by id with book id, book names, format, isbn and page
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const GetBookById = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -24,6 +42,12 @@ const GetBookById = (call, callback)=>{
         }
     })
 }
+
+/**
+ * Search  books by name 
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const SearchBookByName = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -32,6 +56,12 @@ const SearchBookByName = (call, callback)=>{
         else callback(null, {books : JSON.parse(JSON.stringify(res))})
     })
 }
+
+/**
+ * Create a new book with name, format, isbn
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const AddBook = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -42,6 +72,11 @@ const AddBook = (call, callback)=>{
             else callback(null, JSON.parse(JSON.stringify({...call.request, book_id: res.insertId})))
         })
 }
+/**
+ * Edit an existing book name, format, isbn, page
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const EditBook = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -61,6 +96,11 @@ const EditBook = (call, callback)=>{
         }
     })
 }
+/**
+ * Remove an existing book
+ * @param {Object} call 
+ * @param {requestCallback} callback
+ */
 const DeleteBook = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")

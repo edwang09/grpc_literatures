@@ -1,5 +1,20 @@
 const db = require('../database/mysql').getDb();
 const grpc = require('@grpc/grpc-js');
+const {ValidateCallback, ValidateRequest} = require('../helper/helper');
+
+/**
+ * @callback requestCallback
+ * @param {Object} error
+ * @param {Object} response
+ */
+
+
+
+/**
+ * Get all awards granted to book with award and book names
+ * @param {Object} _ 
+ * @param {requestCallback} callback
+ */
 const GetAllBookGrants = (_, callback)=>{
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query(`SELECT 
@@ -15,7 +30,11 @@ const GetAllBookGrants = (_, callback)=>{
         else callback(null, {book_grants : JSON.parse(JSON.stringify(res))})
     })
 }
-
+/**
+ * Get one awards granted to book by id with award and book names
+ * @param {Object} call
+ * @param {requestCallback} callback
+ */
 const GetBookGrant = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -40,6 +59,11 @@ const GetBookGrant = (call, callback)=>{
         }
     })
 }
+/**
+ * Associate an award to a book
+ * @param {Object} call
+ * @param {requestCallback} callback
+ */
 const AddBookGrant = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -49,6 +73,11 @@ const AddBookGrant = (call, callback)=>{
         else callback(null, JSON.parse(JSON.stringify({...call.request, book_grant_id: res.insertId})))
     })
 }
+/**
+ * Edit association of an award to a book
+ * @param {Object} call
+ * @param {requestCallback} callback
+ */
 const EditBookGrant = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
@@ -65,6 +94,11 @@ const EditBookGrant = (call, callback)=>{
             })
         }    })
 }
+/**
+ * Remove association of an award to a book
+ * @param {Object} call
+ * @param {requestCallback} callback
+ */
 const DeleteBookGrant = (call, callback)=>{
     if (!ValidateRequest(call)) return console.error("Invalid argument")
     if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
