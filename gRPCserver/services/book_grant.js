@@ -1,6 +1,7 @@
 const db = require('../database/mysql').getDb();
 const grpc = require('@grpc/grpc-js');
 const GetAllBookGrants = (_, callback)=>{
+    if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query(`SELECT 
     book_grant.book_grant_id,
     award.award_id,
@@ -16,6 +17,8 @@ const GetAllBookGrants = (_, callback)=>{
 }
 
 const GetBookGrant = (call, callback)=>{
+    if (!ValidateRequest(call)) return console.error("Invalid argument")
+    if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query(`SELECT 
     book_grant.book_grant_id,
     award.award_id,
@@ -25,7 +28,7 @@ const GetBookGrant = (call, callback)=>{
     FROM book_grant 
     inner join book on book.book_id = book_grant.book_id
     inner join award on award.award_id = book_grant.award_id
-    WHERE book_grant_id = ${call.request.book_grant_id}`, (err, res)=>{
+    WHERE book_grant_id = ?`,[call.request.book_grant_id], (err, res)=>{
         if (err) callback(err)
         else if (res.length>0){
             callback(null, JSON.parse(JSON.stringify(res[0])))
@@ -38,17 +41,20 @@ const GetBookGrant = (call, callback)=>{
     })
 }
 const AddBookGrant = (call, callback)=>{
+    if (!ValidateRequest(call)) return console.error("Invalid argument")
+    if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query(`INSERT INTO book_grant (book_id, award_id) 
-    VALUES ('${call.request.book_id}','${call.request.award_id}') `, (err, res)=>{
+    VALUES (?, ?) `,[call.request.book_id, call.request.award_id], (err, res)=>{
         if (err) callback(err)
         else callback(null, JSON.parse(JSON.stringify({...call.request, book_grant_id: res.insertId})))
     })
 }
 const EditBookGrant = (call, callback)=>{
+    if (!ValidateRequest(call)) return console.error("Invalid argument")
+    if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query(`UPDATE book_grant 
-    SET book_id = '${call.request.book_id}',
-    award_id = '${call.request.award_id}' 
-    WHERE book_grant_id = '${call.request.book_grant_id}'`, (err, res)=>{
+    SET book_id = ?, award_id = ? 
+    WHERE book_grant_id = ?`,[call.request.book_id, call.request.award_id, call.request.book_grant_id], (err, res)=>{
         if (err) callback(err)
         else if (res.affectedRows>0){
             callback(null, JSON.parse(JSON.stringify(call.request)))
@@ -60,7 +66,9 @@ const EditBookGrant = (call, callback)=>{
         }    })
 }
 const DeleteBookGrant = (call, callback)=>{
-    db.query(`DELETE FROM book_grant WHERE book_grant_id = '${call.request.book_grant_id}'`, (err, res)=>{
+    if (!ValidateRequest(call)) return console.error("Invalid argument")
+    if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
+    db.query(`DELETE FROM book_grant WHERE book_grant_id = ?`,[call.request.book_grant_id], (err, res)=>{
         if (err) callback(err)
         else if (res.affectedRows>0){
             callback(null, {})
@@ -76,9 +84,9 @@ const DeleteBookGrant = (call, callback)=>{
 
 
 module.exports = {
-    GetAllBookGrants: GetAllBookGrants,
-    GetBookGrant: GetBookGrant,
-    AddBookGrant: AddBookGrant,
-    EditBookGrant: EditBookGrant,
-    DeleteBookGrant: DeleteBookGrant
+    GetAllBookGrants,
+    GetBookGrant,
+    AddBookGrant,
+    EditBookGrant,
+    DeleteBookGrant
 }

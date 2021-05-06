@@ -29,7 +29,7 @@ func (s *Server) GetAllAuthors(ctx context.Context, in *pb.Empty) (*pb.AuthorLis
 	}
 	return &pb.AuthorList{Authors: authors}, nil
 }
-func (s *Server) GetAuthor(ctx context.Context, in *pb.AuthorId) (*pb.Author, error) {
+func (s *Server) GetAuthorById(ctx context.Context, in *pb.AuthorId) (*pb.Author, error) {
 	var author pb.Author
 	err := mysql.DB.QueryRow("SELECT * FROM author WHERE author_id = ?", in.GetAuthorId()).Scan(&author.AuthorId, &author.AuthorName)
 	if err != nil {
@@ -37,7 +37,20 @@ func (s *Server) GetAuthor(ctx context.Context, in *pb.AuthorId) (*pb.Author, er
 	}
 	return &author, nil
 }
-func (s *Server) AddAuthor(ctx context.Context, in *pb.NewAuthor) (*pb.Author, error) {
+func (s *Server) SearchAuthorByName(ctx context.Context, in *pb.AuthorName) (*pb.AuthorList, error) {
+	var authors []*pb.Author
+	results, err := mysql.DB.Query("SELECT * FROM author WHERE author_name LIKE ?", "%"+in.GetAuthorName()+"%")
+	for results.Next() {
+		var author pb.Author
+		err = results.Scan(&author.AuthorId, &author.AuthorName)
+		authors = append(authors, &author)
+	}
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AuthorList{Authors: authors}, nil
+}
+func (s *Server) AddAuthor(ctx context.Context, in *pb.AuthorName) (*pb.Author, error) {
 	res, err := mysql.DB.Exec("INSERT INTO author (author_name) VALUES (?) ", in.GetAuthorName())
 	if err != nil {
 		return nil, err
@@ -83,13 +96,26 @@ func (s *Server) GetAllBooks(ctx context.Context, in *pb.Empty) (*pb.BookList, e
 	}
 	return &pb.BookList{Books: books}, nil
 }
-func (s *Server) GetBook(ctx context.Context, in *pb.BookId) (*pb.Book, error) {
+func (s *Server) GetBookById(ctx context.Context, in *pb.BookId) (*pb.Book, error) {
 	var book pb.Book
 	err := mysql.DB.QueryRow("SELECT * FROM book WHERE book_id = ?", in.GetBookId()).Scan(&book.BookId, &book.BookName, &book.Format, &book.Isbn, &book.Page)
 	if err != nil {
 		return nil, err
 	}
 	return &book, nil
+}
+func (s *Server) SearchBookByName(ctx context.Context, in *pb.BookName) (*pb.BookList, error) {
+	var books []*pb.Book
+	results, err := mysql.DB.Query("SELECT * FROM book WHERE book_name LIKE ?", "%"+in.GetBookName()+"%")
+	for results.Next() {
+		var book pb.Book
+		err = results.Scan(&book.BookId, &book.BookName, &book.Format, &book.Isbn, &book.Page)
+		books = append(books, &book)
+	}
+	if err != nil {
+		return nil, err
+	}
+	return &pb.BookList{Books: books}, nil
 }
 func (s *Server) AddBook(ctx context.Context, in *pb.NewBook) (*pb.Book, error) {
 	res, err := mysql.DB.Exec(`INSERT INTO book (book_name, format, isbn, page ) VALUES (?, ?, ?, ? ) `,
@@ -146,7 +172,7 @@ func (s *Server) GetAllAwards(ctx context.Context, in *pb.Empty) (*pb.AwardList,
 	}
 	return &pb.AwardList{Awards: awards}, nil
 }
-func (s *Server) GetAward(ctx context.Context, in *pb.AwardId) (*pb.Award, error) {
+func (s *Server) GetAwardById(ctx context.Context, in *pb.AwardId) (*pb.Award, error) {
 	var award pb.Award
 	err := mysql.DB.QueryRow("SELECT * FROM award WHERE award_id = ?", in.GetAwardId()).Scan(&award.AwardId, &award.AwardName)
 	if err != nil {
@@ -154,7 +180,20 @@ func (s *Server) GetAward(ctx context.Context, in *pb.AwardId) (*pb.Award, error
 	}
 	return &award, nil
 }
-func (s *Server) AddAward(ctx context.Context, in *pb.NewAward) (*pb.Award, error) {
+func (s *Server) SearchAwardByName(ctx context.Context, in *pb.AwardName) (*pb.AwardList, error) {
+	var awards []*pb.Award
+	results, err := mysql.DB.Query("SELECT * FROM award WHERE award_name LIKE ?", "%"+in.GetAwardName()+"%")
+	for results.Next() {
+		var award pb.Award
+		err = results.Scan(&award.AwardId, &award.AwardName)
+		awards = append(awards, &award)
+	}
+	if err != nil {
+		return nil, err
+	}
+	return &pb.AwardList{Awards: awards}, nil
+}
+func (s *Server) AddAward(ctx context.Context, in *pb.AwardName) (*pb.Award, error) {
 	res, err := mysql.DB.Exec("INSERT INTO award (award_name) VALUES (?) ", in.GetAwardName())
 	if err != nil {
 		return nil, err

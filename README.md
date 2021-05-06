@@ -46,7 +46,9 @@ On AWS EC2
    sudo docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
    ```
 
+## Concern
 
+Because of the names of author, award or book can have different versions, the name are not used as key of the tables in database, instead an additional search function for each table are implemented.
 
 
 

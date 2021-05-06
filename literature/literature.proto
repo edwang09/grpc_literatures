@@ -7,20 +7,23 @@ service Literature {
   rpc TestgRPC(Text) returns (Text) {}
 
   rpc GetAllAuthors(Empty) returns (AuthorList) {}
-  rpc GetAuthor(AuthorId) returns (Author) {}
-  rpc AddAuthor(NewAuthor) returns (Author) {}
+  rpc GetAuthorById(AuthorId) returns (Author) {}
+  rpc SearchAuthorByName(AuthorName) returns (AuthorList) {}
+  rpc AddAuthor(AuthorName) returns (Author) {}
   rpc EditAuthor(Author) returns (Author) {}
   rpc DeleteAuthor(AuthorId) returns (Empty) {}
 
   rpc GetAllBooks(Empty) returns (BookList) {}
-  rpc GetBook(BookId) returns (Book) {}
+  rpc GetBookById(BookId) returns (Book) {}
+  rpc SearchBookByName(BookName) returns (BookList) {}
   rpc AddBook(NewBook) returns (Book) {}
   rpc EditBook(Book) returns (Book) {}
   rpc DeleteBook(BookId) returns (Empty) {}
   
   rpc GetAllAwards(Empty) returns (AwardList) {}
-  rpc GetAward(AwardId) returns (Award) {}
-  rpc AddAward(NewAward) returns (Award) {}
+  rpc GetAwardById(AwardId) returns (Award) {}
+  rpc SearchAwardByName(AwardName) returns (AwardList) {}
+  rpc AddAward(AwardName) returns (Award) {}
   rpc EditAward(Award) returns (Award) {}
   rpc DeleteAward(AwardId) returns (Empty) {}
 
@@ -59,7 +62,7 @@ message Author {
   int32 author_id = 1;
   string author_name = 2;
 }
-message NewAuthor {
+message AuthorName {
   string author_name = 1;
 }
 message AuthorList {
@@ -76,6 +79,9 @@ message Book {
   string format = 3;
   string isbn = 4;
   int32 page = 5;
+}
+message BookName {
+  string book_name = 1;
 }
 message NewBook {
   string book_name = 1;
@@ -95,7 +101,7 @@ message Award {
   int32 award_id = 1;
   string award_name = 2;
 }
-message NewAward {
+message AwardName {
   string award_name = 1;
 }
 message AwardList {

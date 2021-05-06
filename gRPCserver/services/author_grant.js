@@ -1,6 +1,7 @@
 const db = require('../database/mysql').getDb();
 const grpc = require('@grpc/grpc-js');
-const GetAllAuthorGrants = (call, callback)=>{
+const GetAllAuthorGrants = (_, callback)=>{
+    if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query(`SELECT 
     author_grant.author_grant_id,
     award.award_id,
@@ -16,6 +17,8 @@ const GetAllAuthorGrants = (call, callback)=>{
 }
 
 const GetAuthorGrant = (call, callback)=>{
+    if (!ValidateRequest(call)) return console.error("Invalid argument")
+    if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query(`SELECT 
     author_grant.author_grant_id,
     award.award_id,
@@ -25,7 +28,7 @@ const GetAuthorGrant = (call, callback)=>{
     FROM author_grant 
     inner join author on author.author_id = author_grant.author_id
     inner join award on award.award_id = author_grant.award_id
-    WHERE author_grant_id = ${call.request.author_grant_id}`, (err, res)=>{
+    WHERE author_grant_id = ?`,[call.request.author_grant_id], (err, res)=>{
         if (err) callback(err)
         else if (res.length>0){
             callback(null, JSON.parse(JSON.stringify(res[0])))
@@ -38,18 +41,21 @@ const GetAuthorGrant = (call, callback)=>{
     })
 }
 const AddAuthorGrant = (call, callback)=>{
+    if (!ValidateRequest(call)) return console.error("Invalid argument")
+    if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query(`INSERT INTO author_grant (author_id, award_id) 
-    VALUES ('${call.request.author_id}','${call.request.award_id}') `, (err, res)=>{
+    VALUES (?,?') `,[call.request.author_id, call.request.award_id], (err, res)=>{
         if (err) callback(err)
         else callback(null, JSON.parse(JSON.stringify({...call.request, author_grant_id: res.insertId})))
     })
 }
 
 const EditAuthorGrant = (call, callback)=>{
+    if (!ValidateRequest(call)) return console.error("Invalid argument")
+    if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
     db.query(`UPDATE author_grant 
-    SET author_id = '${call.request.author_id}',
-    award_id = '${call.request.award_id}' 
-    WHERE author_grant_id = '${call.request.author_grant_id}'`, (err, res)=>{
+    SET author_id = ?, award_id = ?
+    WHERE author_grant_id = ?`,[call.request.author_id, call.request.award_id, call.request.author_grant_id], (err, res)=>{
         if (err) callback(err)
         else if (res.affectedRows>0){
             callback(null, JSON.parse(JSON.stringify(call.request)))
@@ -63,7 +69,9 @@ const EditAuthorGrant = (call, callback)=>{
 }
 
 const DeleteAuthorGrant = (call, callback)=>{
-    db.query(`DELETE FROM author_grant WHERE author_grant_id = '${call.request.author_grant_id}'`, (err, res)=>{
+    if (!ValidateRequest(call)) return console.error("Invalid argument")
+    if (!ValidateCallback(callback)) return console.error("Invalid callback Function")
+    db.query(`DELETE FROM author_grant WHERE author_grant_id = ?`,[call.request.author_grant_id], (err, res)=>{
         if (err) callback(err)
         else if (res.affectedRows>0){
             callback(null, {})
@@ -79,9 +87,9 @@ const DeleteAuthorGrant = (call, callback)=>{
 
 
 module.exports = {
-    GetAllAuthorGrants: GetAllAuthorGrants,
-    GetAuthorGrant: GetAuthorGrant,
-    AddAuthorGrant: AddAuthorGrant,
-    EditAuthorGrant: EditAuthorGrant,
-    DeleteAuthorGrant: DeleteAuthorGrant
+    GetAllAuthorGrants,
+    GetAuthorGrant,
+    AddAuthorGrant,
+    EditAuthorGrant,
+    DeleteAuthorGrant
 }

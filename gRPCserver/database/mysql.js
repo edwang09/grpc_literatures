@@ -19,11 +19,11 @@ module.exports = {
 const tryConnect = (db)=>{
     db.connect((err) => {
         if (err) {
-            console.log(err);
+            console.error(err);
             console.log("trying to reconnect");
             setTimeout(()=>tryConnect(db), 5000);
         }else{
-            console.log("Connected!");
+            console.log("Database connected to Node server!");
         }
     });
 }

@@ -20,18 +20,21 @@ const _ = grpc.SupportPackageIsVersion7
 type LiteratureClient interface {
 	TestgRPC(ctx context.Context, in *Text, opts ...grpc.CallOption) (*Text, error)
 	GetAllAuthors(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AuthorList, error)
-	GetAuthor(ctx context.Context, in *AuthorId, opts ...grpc.CallOption) (*Author, error)
-	AddAuthor(ctx context.Context, in *NewAuthor, opts ...grpc.CallOption) (*Author, error)
+	GetAuthorById(ctx context.Context, in *AuthorId, opts ...grpc.CallOption) (*Author, error)
+	SearchAuthorByName(ctx context.Context, in *AuthorName, opts ...grpc.CallOption) (*AuthorList, error)
+	AddAuthor(ctx context.Context, in *AuthorName, opts ...grpc.CallOption) (*Author, error)
 	EditAuthor(ctx context.Context, in *Author, opts ...grpc.CallOption) (*Author, error)
 	DeleteAuthor(ctx context.Context, in *AuthorId, opts ...grpc.CallOption) (*Empty, error)
 	GetAllBooks(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BookList, error)
-	GetBook(ctx context.Context, in *BookId, opts ...grpc.CallOption) (*Book, error)
+	GetBookById(ctx context.Context, in *BookId, opts ...grpc.CallOption) (*Book, error)
+	SearchBookByName(ctx context.Context, in *BookName, opts ...grpc.CallOption) (*BookList, error)
 	AddBook(ctx context.Context, in *NewBook, opts ...grpc.CallOption) (*Book, error)
 	EditBook(ctx context.Context, in *Book, opts ...grpc.CallOption) (*Book, error)
 	DeleteBook(ctx context.Context, in *BookId, opts ...grpc.CallOption) (*Empty, error)
 	GetAllAwards(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AwardList, error)
-	GetAward(ctx context.Context, in *AwardId, opts ...grpc.CallOption) (*Award, error)
-	AddAward(ctx context.Context, in *NewAward, opts ...grpc.CallOption) (*Award, error)
+	GetAwardById(ctx context.Context, in *AwardId, opts ...grpc.CallOption) (*Award, error)
+	SearchAwardByName(ctx context.Context, in *AwardName, opts ...grpc.CallOption) (*AwardList, error)
+	AddAward(ctx context.Context, in *AwardName, opts ...grpc.CallOption) (*Award, error)
 	EditAward(ctx context.Context, in *Award, opts ...grpc.CallOption) (*Award, error)
 	DeleteAward(ctx context.Context, in *AwardId, opts ...grpc.CallOption) (*Empty, error)
 	GetAllBookAuthors(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BookAuthorList, error)
@@ -80,16 +83,25 @@ func (c *literatureClient) GetAllAuthors(ctx context.Context, in *Empty, opts ..
 	return out, nil
 }
 
-func (c *literatureClient) GetAuthor(ctx context.Context, in *AuthorId, opts ...grpc.CallOption) (*Author, error) {
+func (c *literatureClient) GetAuthorById(ctx context.Context, in *AuthorId, opts ...grpc.CallOption) (*Author, error) {
 	out := new(Author)
-	err := c.cc.Invoke(ctx, "/literature.Literature/GetAuthor", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/literature.Literature/GetAuthorById", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *literatureClient) AddAuthor(ctx context.Context, in *NewAuthor, opts ...grpc.CallOption) (*Author, error) {
+func (c *literatureClient) SearchAuthorByName(ctx context.Context, in *AuthorName, opts ...grpc.CallOption) (*AuthorList, error) {
+	out := new(AuthorList)
+	err := c.cc.Invoke(ctx, "/literature.Literature/SearchAuthorByName", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *literatureClient) AddAuthor(ctx context.Context, in *AuthorName, opts ...grpc.CallOption) (*Author, error) {
 	out := new(Author)
 	err := c.cc.Invoke(ctx, "/literature.Literature/AddAuthor", in, out, opts...)
 	if err != nil {
@@ -125,9 +137,18 @@ func (c *literatureClient) GetAllBooks(ctx context.Context, in *Empty, opts ...g
 	return out, nil
 }
 
-func (c *literatureClient) GetBook(ctx context.Context, in *BookId, opts ...grpc.CallOption) (*Book, error) {
+func (c *literatureClient) GetBookById(ctx context.Context, in *BookId, opts ...grpc.CallOption) (*Book, error) {
 	out := new(Book)
-	err := c.cc.Invoke(ctx, "/literature.Literature/GetBook", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/literature.Literature/GetBookById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *literatureClient) SearchBookByName(ctx context.Context, in *BookName, opts ...grpc.CallOption) (*BookList, error) {
+	out := new(BookList)
+	err := c.cc.Invoke(ctx, "/literature.Literature/SearchBookByName", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -170,16 +191,25 @@ func (c *literatureClient) GetAllAwards(ctx context.Context, in *Empty, opts ...
 	return out, nil
 }
 
-func (c *literatureClient) GetAward(ctx context.Context, in *AwardId, opts ...grpc.CallOption) (*Award, error) {
+func (c *literatureClient) GetAwardById(ctx context.Context, in *AwardId, opts ...grpc.CallOption) (*Award, error) {
 	out := new(Award)
-	err := c.cc.Invoke(ctx, "/literature.Literature/GetAward", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/literature.Literature/GetAwardById", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *literatureClient) AddAward(ctx context.Context, in *NewAward, opts ...grpc.CallOption) (*Award, error) {
+func (c *literatureClient) SearchAwardByName(ctx context.Context, in *AwardName, opts ...grpc.CallOption) (*AwardList, error) {
+	out := new(AwardList)
+	err := c.cc.Invoke(ctx, "/literature.Literature/SearchAwardByName", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *literatureClient) AddAward(ctx context.Context, in *AwardName, opts ...grpc.CallOption) (*Award, error) {
 	out := new(Award)
 	err := c.cc.Invoke(ctx, "/literature.Literature/AddAward", in, out, opts...)
 	if err != nil {
@@ -374,18 +404,21 @@ func (c *literatureClient) MostGrantedAward(ctx context.Context, in *Empty, opts
 type LiteratureServer interface {
 	TestgRPC(context.Context, *Text) (*Text, error)
 	GetAllAuthors(context.Context, *Empty) (*AuthorList, error)
-	GetAuthor(context.Context, *AuthorId) (*Author, error)
-	AddAuthor(context.Context, *NewAuthor) (*Author, error)
+	GetAuthorById(context.Context, *AuthorId) (*Author, error)
+	SearchAuthorByName(context.Context, *AuthorName) (*AuthorList, error)
+	AddAuthor(context.Context, *AuthorName) (*Author, error)
 	EditAuthor(context.Context, *Author) (*Author, error)
 	DeleteAuthor(context.Context, *AuthorId) (*Empty, error)
 	GetAllBooks(context.Context, *Empty) (*BookList, error)
-	GetBook(context.Context, *BookId) (*Book, error)
+	GetBookById(context.Context, *BookId) (*Book, error)
+	SearchBookByName(context.Context, *BookName) (*BookList, error)
 	AddBook(context.Context, *NewBook) (*Book, error)
 	EditBook(context.Context, *Book) (*Book, error)
 	DeleteBook(context.Context, *BookId) (*Empty, error)
 	GetAllAwards(context.Context, *Empty) (*AwardList, error)
-	GetAward(context.Context, *AwardId) (*Award, error)
-	AddAward(context.Context, *NewAward) (*Award, error)
+	GetAwardById(context.Context, *AwardId) (*Award, error)
+	SearchAwardByName(context.Context, *AwardName) (*AwardList, error)
+	AddAward(context.Context, *AwardName) (*Award, error)
 	EditAward(context.Context, *Award) (*Award, error)
 	DeleteAward(context.Context, *AwardId) (*Empty, error)
 	GetAllBookAuthors(context.Context, *Empty) (*BookAuthorList, error)
@@ -419,10 +452,13 @@ func (UnimplementedLiteratureServer) TestgRPC(context.Context, *Text) (*Text, er
 func (UnimplementedLiteratureServer) GetAllAuthors(context.Context, *Empty) (*AuthorList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllAuthors not implemented")
 }
-func (UnimplementedLiteratureServer) GetAuthor(context.Context, *AuthorId) (*Author, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAuthor not implemented")
+func (UnimplementedLiteratureServer) GetAuthorById(context.Context, *AuthorId) (*Author, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAuthorById not implemented")
 }
-func (UnimplementedLiteratureServer) AddAuthor(context.Context, *NewAuthor) (*Author, error) {
+func (UnimplementedLiteratureServer) SearchAuthorByName(context.Context, *AuthorName) (*AuthorList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchAuthorByName not implemented")
+}
+func (UnimplementedLiteratureServer) AddAuthor(context.Context, *AuthorName) (*Author, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddAuthor not implemented")
 }
 func (UnimplementedLiteratureServer) EditAuthor(context.Context, *Author) (*Author, error) {
@@ -434,8 +470,11 @@ func (UnimplementedLiteratureServer) DeleteAuthor(context.Context, *AuthorId) (*
 func (UnimplementedLiteratureServer) GetAllBooks(context.Context, *Empty) (*BookList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllBooks not implemented")
 }
-func (UnimplementedLiteratureServer) GetBook(context.Context, *BookId) (*Book, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBook not implemented")
+func (UnimplementedLiteratureServer) GetBookById(context.Context, *BookId) (*Book, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBookById not implemented")
+}
+func (UnimplementedLiteratureServer) SearchBookByName(context.Context, *BookName) (*BookList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchBookByName not implemented")
 }
 func (UnimplementedLiteratureServer) AddBook(context.Context, *NewBook) (*Book, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddBook not implemented")
@@ -449,10 +488,13 @@ func (UnimplementedLiteratureServer) DeleteBook(context.Context, *BookId) (*Empt
 func (UnimplementedLiteratureServer) GetAllAwards(context.Context, *Empty) (*AwardList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllAwards not implemented")
 }
-func (UnimplementedLiteratureServer) GetAward(context.Context, *AwardId) (*Award, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAward not implemented")
+func (UnimplementedLiteratureServer) GetAwardById(context.Context, *AwardId) (*Award, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAwardById not implemented")
 }
-func (UnimplementedLiteratureServer) AddAward(context.Context, *NewAward) (*Award, error) {
+func (UnimplementedLiteratureServer) SearchAwardByName(context.Context, *AwardName) (*AwardList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchAwardByName not implemented")
+}
+func (UnimplementedLiteratureServer) AddAward(context.Context, *AwardName) (*Award, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddAward not implemented")
 }
 func (UnimplementedLiteratureServer) EditAward(context.Context, *Award) (*Award, error) {
@@ -564,26 +606,44 @@ func _Literature_GetAllAuthors_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Literature_GetAuthor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Literature_GetAuthorById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AuthorId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LiteratureServer).GetAuthor(ctx, in)
+		return srv.(LiteratureServer).GetAuthorById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/literature.Literature/GetAuthor",
+		FullMethod: "/literature.Literature/GetAuthorById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LiteratureServer).GetAuthor(ctx, req.(*AuthorId))
+		return srv.(LiteratureServer).GetAuthorById(ctx, req.(*AuthorId))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Literature_SearchAuthorByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuthorName)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LiteratureServer).SearchAuthorByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/literature.Literature/SearchAuthorByName",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LiteratureServer).SearchAuthorByName(ctx, req.(*AuthorName))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Literature_AddAuthor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NewAuthor)
+	in := new(AuthorName)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -595,7 +655,7 @@ func _Literature_AddAuthor_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/literature.Literature/AddAuthor",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LiteratureServer).AddAuthor(ctx, req.(*NewAuthor))
+		return srv.(LiteratureServer).AddAuthor(ctx, req.(*AuthorName))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -654,20 +714,38 @@ func _Literature_GetAllBooks_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Literature_GetBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Literature_GetBookById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(BookId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LiteratureServer).GetBook(ctx, in)
+		return srv.(LiteratureServer).GetBookById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/literature.Literature/GetBook",
+		FullMethod: "/literature.Literature/GetBookById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LiteratureServer).GetBook(ctx, req.(*BookId))
+		return srv.(LiteratureServer).GetBookById(ctx, req.(*BookId))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Literature_SearchBookByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BookName)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LiteratureServer).SearchBookByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/literature.Literature/SearchBookByName",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LiteratureServer).SearchBookByName(ctx, req.(*BookName))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -744,26 +822,44 @@ func _Literature_GetAllAwards_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Literature_GetAward_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Literature_GetAwardById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AwardId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LiteratureServer).GetAward(ctx, in)
+		return srv.(LiteratureServer).GetAwardById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/literature.Literature/GetAward",
+		FullMethod: "/literature.Literature/GetAwardById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LiteratureServer).GetAward(ctx, req.(*AwardId))
+		return srv.(LiteratureServer).GetAwardById(ctx, req.(*AwardId))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Literature_SearchAwardByName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AwardName)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LiteratureServer).SearchAwardByName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/literature.Literature/SearchAwardByName",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LiteratureServer).SearchAwardByName(ctx, req.(*AwardName))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Literature_AddAward_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NewAward)
+	in := new(AwardName)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -775,7 +871,7 @@ func _Literature_AddAward_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/literature.Literature/AddAward",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LiteratureServer).AddAward(ctx, req.(*NewAward))
+		return srv.(LiteratureServer).AddAward(ctx, req.(*AwardName))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1156,8 +1252,12 @@ var Literature_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Literature_GetAllAuthors_Handler,
 		},
 		{
-			MethodName: "GetAuthor",
-			Handler:    _Literature_GetAuthor_Handler,
+			MethodName: "GetAuthorById",
+			Handler:    _Literature_GetAuthorById_Handler,
+		},
+		{
+			MethodName: "SearchAuthorByName",
+			Handler:    _Literature_SearchAuthorByName_Handler,
 		},
 		{
 			MethodName: "AddAuthor",
@@ -1176,8 +1276,12 @@ var Literature_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Literature_GetAllBooks_Handler,
 		},
 		{
-			MethodName: "GetBook",
-			Handler:    _Literature_GetBook_Handler,
+			MethodName: "GetBookById",
+			Handler:    _Literature_GetBookById_Handler,
+		},
+		{
+			MethodName: "SearchBookByName",
+			Handler:    _Literature_SearchBookByName_Handler,
 		},
 		{
 			MethodName: "AddBook",
@@ -1196,8 +1300,12 @@ var Literature_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Literature_GetAllAwards_Handler,
 		},
 		{
-			MethodName: "GetAward",
-			Handler:    _Literature_GetAward_Handler,
+			MethodName: "GetAwardById",
+			Handler:    _Literature_GetAwardById_Handler,
+		},
+		{
+			MethodName: "SearchAwardByName",
+			Handler:    _Literature_SearchAwardByName_Handler,
 		},
 		{
 			MethodName: "AddAward",

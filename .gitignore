@@ -17,7 +17,7 @@
 node_modules
 .env
 memo
-databasedumps
+databasedumps/
 docker-compose.backup.yml
 gRPCclient/literature
 gRPCserver/literature
