@@ -2,8 +2,11 @@
 
 ## About the Project
 This project was intended to build a gRPC server in Node.js, which is the main deliverable for the test. 
+
 An Node.js REST server was also built initially to serve as a client for the gRPC server before I know that Wombat will be used for testing the gRPC server.
+
 After talking with Micheal Switzer, I decided to build another gRPC server in Golang to demonstrate my ability to work across multiple languages.
+
 Reviewing of the REST server and Golang server can be optional.
 
 ### Docker Structure
