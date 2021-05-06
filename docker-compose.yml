@@ -8,7 +8,7 @@ services:
             - mysql_db
     grpcservergo:
         build: ./gRPCserver_go
-        # image: edwang09/grpc-node-server-go
+        image: edwang09/grpc-node-server-go
         depends_on:
             - mysql_db
     grpcclient:

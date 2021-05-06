@@ -52,32 +52,49 @@ Bonus points if you can write the terraform to provision this in AWS
 
 
 ## About the Project
-### Project diagram
+### Docker Structure
 [![Structure Screen Shot][project-screenshot]]
 
-### Database diagram
+### Database Structure
 [![Database Screen Shot][database-screenshot]]
 
 ## Prerequisites
 
-### Docker
+Docker, Docker Compose, Terraform
 
 ## How to start
 
 ### development
+
    ```sh
-    sudo docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+   sudo docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
 
    ```
+
+### Terraform provision
+the terraform file will create a security group and a EC2 instance opening ports of 22(for SSH), 80(for REST API), 50051(for Node GRPC server), 50052(for go GRPC server).
+
+   ```sh
+   terraform -chdir=terraform apply
+   ```
+After the instance been created, SSH into the instance and install docker and docker-compose, export necessary environment variables(can be checked in docker-compose.prod.yml) and pull source code from github.
 
 ### production
 
+On local machine
    ```sh
-cp protos gRPCclient -r
-cp protos gRPCserver -r
-sudo docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
-sudo docker-compose -f docker-compose.yml -f docker-compose.prod.yml push
+   cp literature gRPCclient -r
+   cp literature gRPCserver -r
+   cp literature gRPCserver_go -r
+   sudo docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
+   sudo docker-compose -f docker-compose.yml -f docker-compose.prod.yml push
+   ```
 
+On AWS EC2
+
+   ```sh
+   sudo docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull
+   sudo docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
    ```
 
 
@@ -91,8 +108,5 @@ sudo docker-compose -f docker-compose.yml -f docker-compose.prod.yml push
 
 
 
-
-
-
-[product-screenshot]: demo/structure.png
-[product-screenshot]: demo/database.png
+[product-screenshot]: docker.png
+[product-screenshot]: database.png

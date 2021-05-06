@@ -13,10 +13,13 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
 node_modules
 .env
 databasedumps
-terraform
 docker-compose.backup.yml
 gRPCclient/literature
 gRPCserver/literature
+
+terraform/*
+!terraform/main.tf
