@@ -53,10 +53,10 @@ Bonus points if you can write the terraform to provision this in AWS
 
 ## About the Project
 ### Docker Structure
-[![Structure Screen Shot][docker-diagram]]
+![Structure Screen Shot][docker-diagram]
 
 ### Database Structure
-[![Database Screen Shot][database-diagram]]
+![Database Screen Shot][database-diagram]
 
 ## Prerequisites
 
