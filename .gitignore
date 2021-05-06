@@ -16,6 +16,7 @@
 
 node_modules
 .env
+memo
 databasedumps
 docker-compose.backup.yml
 gRPCclient/literature
