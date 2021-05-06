@@ -10,6 +10,8 @@ Reviewing of the REST server and Golang server can be optional.
 ![Structure Screen Shot][docker-diagram]
 
 ### Database Structure
+
+All relations among author, book and award are designed as many to many. A book can have more that one author, an author can write more than one book, an award can be given to more than one author or book, a book or author can earn more than one awards.
 ![Database Screen Shot][database-diagram]
 
 ## Prerequisites
@@ -63,9 +65,9 @@ On AWS EC2
 ## Concerns and questions
 
 1. Because of the names of author, award or book can have different versions, the name are not used as key of the tables in database, instead an additional search function for each table are implemented.
-2. When implementing services in `Golang`, I did not figure out how to create a server struct and implement services in separate packages, which end up implementing all functions in one file. What can be a better way to do it?
-3. Live reloading for development for Go server was not implemented, but I should have implement it.
-4. I tried to only compile `.proto` file in docker so that I can make sure all three servers have save `.proto` file when I make change to it, but that will confuse my IDE since the package is missing in local. Is there a better way to make sure `.proto` file is consistant?
+2. When implementing services in Go, I did not figure out how to create a server struct and implement services in separate packages, which end up implementing all functions in one file. What can be a better way to do it?
+3. Live reloading for development for Go server was not implemented, but I should have implemented that.
+4. I tried to only compile `.proto` file in docker so that I can make sure all three servers have same `.proto` file when I make change to it, but that will confuse my IDE since the package is missing in local. Is there a better way to make sure `.proto` file is consistant?
 
 
 

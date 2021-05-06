@@ -235,8 +235,8 @@ func (s *Server) GetAllBookAuthors(ctx context.Context, in *pb.Empty) (*pb.BookA
     author.author_id,
     author.author_name
     FROM book_author 
-    inner join book on book.book_id = book_author.book_id
-    inner join author on author.author_id = book_author.author_id`)
+    INNER JOIN book on book.book_id = book_author.book_id
+    INNER JOIN author on author.author_id = book_author.author_id`)
 	for results.Next() {
 		var bookAuthor pb.BookAuthorDetail
 		err = results.Scan(&bookAuthor.BookAuthorId, &bookAuthor.BookId, &bookAuthor.BookName, &bookAuthor.AuthorId, &bookAuthor.AuthorName)
@@ -256,8 +256,8 @@ func (s *Server) GetBookAuthor(ctx context.Context, in *pb.BookAuthorId) (*pb.Bo
     author.author_id,
     author.author_name
     FROM book_author 
-    inner join book on book.book_id = book_author.book_id
-    inner join author on author.author_id = book_author.author_id
+    INNER JOIN book on book.book_id = book_author.book_id
+    INNER JOIN author on author.author_id = book_author.author_id
     WHERE book_author_id = ?`, in.GetBookAuthorId()).Scan(&bookAuthor.BookAuthorId, &bookAuthor.BookId, &bookAuthor.BookName, &bookAuthor.AuthorId, &bookAuthor.AuthorName)
 	if err != nil {
 		return nil, err
@@ -316,8 +316,8 @@ func (s *Server) GetAllAuthorGrants(ctx context.Context, in *pb.Empty) (*pb.Auth
     author.author_id,
     author.author_name
     FROM author_grant 
-    inner join author on author.author_id = author_grant.author_id
-    inner join award on award.award_id = author_grant.award_id`)
+    INNER JOIN author on author.author_id = author_grant.author_id
+    INNER JOIN award on award.award_id = author_grant.award_id`)
 	for results.Next() {
 		var authorGrant pb.AuthorGrantDetail
 		err = results.Scan(&authorGrant.AuthorGrantId, &authorGrant.AwardId, &authorGrant.AwardName, &authorGrant.AuthorId, &authorGrant.AuthorName)
@@ -337,8 +337,8 @@ func (s *Server) GetAuthorGrant(ctx context.Context, in *pb.AuthorGrantId) (*pb.
     author.author_id,
     author.author_name
     FROM author_grant 
-    inner join author on author.author_id = author_grant.author_id
-    inner join award on award.award_id = author_grant.award_id
+    INNER JOIN author on author.author_id = author_grant.author_id
+    INNER JOIN award on award.award_id = author_grant.award_id
     WHERE author_grant_id = ?`, in.GetAuthorGrantId()).Scan(&authorGrant.AuthorGrantId, &authorGrant.AwardId, &authorGrant.AwardName, &authorGrant.AuthorId, &authorGrant.AuthorName)
 	if err != nil {
 		return nil, err
@@ -397,8 +397,8 @@ func (s *Server) GetAllBookGrants(ctx context.Context, in *pb.Empty) (*pb.BookGr
     book.book_id,
     book.book_name
     FROM book_grant 
-    inner join book on book.book_id = book_grant.book_id
-    inner join award on award.award_id = book_grant.award_id`)
+    INNER JOIN book on book.book_id = book_grant.book_id
+    INNER JOIN award on award.award_id = book_grant.award_id`)
 	for results.Next() {
 		var bookGrant pb.BookGrantDetail
 		err = results.Scan(&bookGrant.BookGrantId, &bookGrant.AwardId, &bookGrant.AwardName, &bookGrant.BookId, &bookGrant.BookName)
@@ -418,8 +418,8 @@ func (s *Server) GetBookGrant(ctx context.Context, in *pb.BookGrantId) (*pb.Book
     book.book_id,
     book.book_name
     FROM book_grant 
-    inner join book on book.book_id = book_grant.book_id
-    inner join award on award.award_id = book_grant.award_id
+    INNER JOIN book on book.book_id = book_grant.book_id
+    INNER JOIN award on award.award_id = book_grant.award_id
     WHERE book_grant_id = ?`, in.GetBookGrantId()).Scan(&bookGrant.BookGrantId, &bookGrant.AwardId, &bookGrant.AwardName, &bookGrant.BookId, &bookGrant.BookName)
 	if err != nil {
 		return nil, err
